@@ -8,7 +8,7 @@ deployed URL: https://cs24-bw-ts.herokuapp.com/
 * GET: /rooms
 
 ##GET ROOM BY ID
-* GET: /room/:id
+* GET: /rooms/:id
 
 ##GET ROOM BY COORDINATES
 * POST: /room/coord
