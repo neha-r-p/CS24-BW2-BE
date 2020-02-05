@@ -3,23 +3,32 @@ const db = require('../db/dbConfig')
 module.exports = {
   createRoom,
   getRooms,
+  getRoomById,
+  getRoomByCoordinates,
   updateRoom,
-  createRoomsExits
+//   createRoomsExits
 }
 
 function createRoom(room) {
-  return db('rooms').insert(room, 'room_id')
+  return db('rooms').insert(room, 'room_id').then(room => room)
 }
 
 function getRooms() {
   return db('rooms')
-      .leftJoin("exits", "exits.room_id", "rooms.room_id")
 }
 
-function createRoomsExits(exit) {
-  return db('exits')
-      .insert(exit, "*")
+function getRoomById(room_id){
+    return db('rooms')
+    .where({room_id})
+    .first()
 }
+
+function getRoomByCoordinates(coordinates){
+    return db('rooms')
+    .where({coordinates})
+    .first()
+}
+
 
 function updateRoom(room, exit) {
   return db('exits')

@@ -5,54 +5,49 @@ router.get('/', (req, res) => {
   roomsDB
     .getRooms()
     .then(rooms => {
-      roomRes = []
-      rooms.forEach(room => {
-        filtered = roomRes.filter(rm => rm.room_id == room.room_id)
-        if (filtered.length > 0) {
-          filtered[0].exits.push(room.direction)
-        } else {
-          roomRes.push({
-            title: room.title,
-            room_id: room.room_id,
-            description: room.description,
-            coordinates: room.coordinates,
-            cooldown: room.cooldown,
-            exits: [room.direction]
-          })
-        }
-      })
-      res.status(200).json(roomRes)
+      res.status(200).json(rooms)
     })
     .catch(err =>
       res.status(500).json({ errorMassage: 'Server could not retrieve rooms' })
     )
 })
 
-router.post('/', createRoom, formatExits, (req, res) => {
-  //create exits for room
+//get room by ID
+router.get('/:id', (req, res) => {
+  console.log(req.params)
+  const { id } = req.params
+
   roomsDB
-    .createRoomsExits(req.exits)
-    .then(exit => res.status(201).json('Room was created'))
-    .catch(err => console.log('Server could not add an exit'))
+    .getRoomById(id)
+    .then(room => {
+      res.status(200).json(room)
+    })
+    .catch(err =>
+      res.status(500).json({ error: 'Room could not be retrieved.' })
+    )
 })
 
-//create a room
-function createRoom(req, res, next) {
+//create room
+router.post('/', formatExits, (req, res) => {
   const room = req.body
-  const { title, room_id, description, coordinates, cooldown } = room
+  req.body.exits = req.exits
+  const { title, room_id, description, coordinates, cooldown, exits } = room
   roomsDB
-    .createRoom({ title, room_id, description, coordinates, cooldown })
-    .then(room => next())
+    .createRoom({ title, room_id, description, coordinates, cooldown, exits })
+    .then(room => {
+        console.log("room", room)
+        res.status(201).json('Room was created')
+    })
     .catch(err =>
       res.status(500).json({ error: 'Server could not add a room' })
     )
-}
+})
 
 //format exits
 function formatExits(req, res, next) {
   const room = req.body
-  const { exits, room_id } = room
-  const exitsDir = exits.map(item => ({ direction: item, room_id: room_id }))
+  const { exits } = room
+  const exitsDir = JSON.stringify(exits)
   req.exits = exitsDir
 
   next()

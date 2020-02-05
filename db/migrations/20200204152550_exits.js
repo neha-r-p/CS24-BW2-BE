@@ -3,6 +3,7 @@ exports.up = function(knex) {
     exits.increments()
 
     exits.string('direction', 10)
+    exits.integer('exit_to').defaultTo(null)
     exits
       .integer('room_id')
       .unsigned()
