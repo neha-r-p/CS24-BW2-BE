@@ -30,8 +30,8 @@ function getRoomByCoordinates(coordinates){
 }
 
 
-function updateRoom(room, exit) {
-  return db('exits')
-    .where(room)
-    .update(exit, '*')
+function updateRoom(changes, room_id) {
+  return db('rooms')
+    .where({room_id})
+    .update(changes)
 }

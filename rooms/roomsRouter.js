@@ -14,7 +14,6 @@ router.get('/', (req, res) => {
 
 //get room by ID
 router.get('/:id', (req, res) => {
-  console.log(req.params)
   const { id } = req.params
 
   roomsDB
@@ -35,11 +34,9 @@ router.post('/', formatExits, (req, res) => {
   room.s = null
   room.e = null
   room.w = null
-  console.log(room)
   
   let { title, room_id, description, coordinates, cooldown, exits, n, s, e, w } = room
   exits.forEach(exit => room[exit] = -1)
-  console.log("n", room.n)
   
   exits = req.exits
   roomsDB
@@ -56,12 +53,33 @@ router.post('/', formatExits, (req, res) => {
       w: room.w
     })
     .then(room => {
-      console.log('room', room)
       res.status(201).json('Room was created')
     })
     .catch(err =>
       res.status(500).json({ error: 'Server could not add a room' })
     )
+})
+
+//update exit to's
+router.put('/:id', (req, res) => {
+    const { id } = req.params
+    const changes = req.body
+
+    roomsDB.getRoomById(id)
+    .then(room => {
+        if(room){
+            roomsDB.updateRoom(changes, id)
+            .then(updatedRoom => {
+                res.status(200).json(updatedRoom)
+            })
+        } else {
+            res.status(404).json({ error: "Could not find room with given ID"})
+        }
+    })
+    .catch(err => {
+        res.status(500).json({error: "Failed to update room"})
+    })
+
 })
 
 //format exits
