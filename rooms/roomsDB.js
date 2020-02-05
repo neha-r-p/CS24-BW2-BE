@@ -12,7 +12,8 @@ function createRoom(room) {
 }
 
 function getRooms() {
-  return db('rooms').join("exits", "exits.room_id", "rooms.room_id")
+  return db('rooms')
+      .leftJoin("exits", "exits.room_id", "rooms.room_id")
 }
 
 function createRoomsExits(exit) {

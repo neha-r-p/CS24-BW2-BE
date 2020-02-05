@@ -8,8 +8,6 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', createRoom, formatExits, (req, res) => {
-    const room = req.body;
-    const {exits, title, room_id, description, coordinates, cooldown} = room;
     //create exits for room
     roomsDB.createRoomsExits(req.exits)
         .then(exit => res.status(201).json('Room was created'))
