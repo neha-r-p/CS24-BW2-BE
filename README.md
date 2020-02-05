@@ -7,7 +7,7 @@ deployed URL: https://cs24-bw-ts.herokuapp.com/
 ## GET ROOMS
 * GET: /rooms
 
-##GET ROOM BY ID
+##GET ROOM BY ID (where ID is room_id)
 * GET: /rooms/:id
 
 ##GET ROOM BY COORDINATES
@@ -37,7 +37,7 @@ deployed URL: https://cs24-bw-ts.herokuapp.com/
 }
 ```
 
-##UPDATE ROOM
+##UPDATE ROOM (where ID is room_id)
 * PUT: /rooms/:id
 * JSON body: Whole room in the format of our BE (I know, sorry!)
 ```
