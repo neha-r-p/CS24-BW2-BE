@@ -7,8 +7,8 @@ router.get('/', (req, res) => {
     .then(rooms => {
       roomRes = []
       rooms.forEach(room => {
-        if (roomRes.filter(rm => rm.room_id == room.room_id).length > 0) {
-          filtered = roomRes.filter(rm => rm.room_id == room.room_id)
+        filtered = roomRes.filter(rm => rm.room_id == room.room_id)
+        if (filtered.length > 0) {
           filtered[0].exits.push(room.direction)
         } else {
           roomRes.push({
