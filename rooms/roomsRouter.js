@@ -29,14 +29,35 @@ router.get('/:id', (req, res) => {
 
 //create room
 router.post('/', formatExits, (req, res) => {
-  const room = req.body
-  req.body.exits = req.exits
-  const { title, room_id, description, coordinates, cooldown, exits } = room
+  let room = req.body
+  //   console.log(req.body.n)
+  room.n = null
+  room.s = null
+  room.e = null
+  room.w = null
+  console.log(room)
+  
+  let { title, room_id, description, coordinates, cooldown, exits, n, s, e, w } = room
+  exits.forEach(exit => room[exit] = -1)
+  console.log("n", room.n)
+  
+  exits = req.exits
   roomsDB
-    .createRoom({ title, room_id, description, coordinates, cooldown, exits })
+    .createRoom({
+      title,
+      room_id,
+      description,
+      coordinates,
+      cooldown,
+      exits,
+      n: room.n,
+      s: room.s,
+      e: room.e,
+      w: room.w
+    })
     .then(room => {
-        console.log("room", room)
-        res.status(201).json('Room was created')
+      console.log('room', room)
+      res.status(201).json('Room was created')
     })
     .catch(err =>
       res.status(500).json({ error: 'Server could not add a room' })
