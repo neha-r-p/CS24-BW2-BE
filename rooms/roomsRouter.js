@@ -2,18 +2,25 @@ const router = require('express').Router()
 const roomsDB = require('./roomsDB')
 
 router.get('/', (req, res) => {
-    roomsDB
+  roomsDB
     .getRooms()
     .then(rooms => {
-        roomRes = []
-        rooms.forEach(room => roomRes.push({
-            "title": room.title,
-            "room_id": room.room_id,
-            "description": room.description,
-            "coordinates": room.coordinates,
-            "cooldown": room.cooldown,
-            "exits": [room.direction]
-        }))
+      roomRes = []
+      rooms.forEach(room => {
+        if (roomRes.filter(rm => rm.room_id == room.room_id).length > 0) {
+          filtered = roomRes.filter(rm => rm.room_id == room.room_id)
+          filtered[0].exits.push(room.direction)
+        } else {
+          roomRes.push({
+            title: room.title,
+            room_id: room.room_id,
+            description: room.description,
+            coordinates: room.coordinates,
+            cooldown: room.cooldown,
+            exits: [room.direction]
+          })
+        }
+      })
       res.status(200).json(roomRes)
     })
     .catch(err =>
