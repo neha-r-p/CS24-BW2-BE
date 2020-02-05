@@ -7,6 +7,11 @@ exports.up = function(knex) {
     rooms.string('description')
     rooms.string('coordinates').notNullable()
     rooms.integer('cooldown').notNullable()
+    rooms.string('exits')
+    rooms.integer('n').defaultTo(null)
+    rooms.integer('s').defaultTo(null)
+    rooms.integer('e').defaultTo(null)
+    rooms.integer('w').defaultTo(null)
   })
 }
 
