@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
       res.status(200).json(rooms)
     })
     .catch(err =>
-      res.status(500).json({ errorMassage: 'Server could not retrieve rooms' })
+      res.status(500).json({ errorMassage: 'Server could not retrieve rooms.' })
     )
 })
 
@@ -26,6 +26,15 @@ router.get('/:id', (req, res) => {
     )
 })
 
+//get room by coordinates
+router.post('/coord', (req, res) => {
+  const { coordinates } = req.body
+  roomsDB
+    .getRoomByCoordinates(coordinates)
+    .then(room => res.status(200).json(room))
+    .catch(err => res.status(500).json({ error: "Room could not be retrieved."}))
+})
+
 //create room
 router.post('/', formatExits, (req, res) => {
   let room = req.body
@@ -34,10 +43,21 @@ router.post('/', formatExits, (req, res) => {
   room.s = null
   room.e = null
   room.w = null
-  
-  let { title, room_id, description, coordinates, cooldown, exits, n, s, e, w } = room
-  exits.forEach(exit => room[exit] = -1)
-  
+
+  let {
+    title,
+    room_id,
+    description,
+    coordinates,
+    cooldown,
+    exits,
+    n,
+    s,
+    e,
+    w
+  } = room
+  exits.forEach(exit => (room[exit] = -1))
+
   exits = req.exits
   roomsDB
     .createRoom({
@@ -62,24 +82,23 @@ router.post('/', formatExits, (req, res) => {
 
 //update exit to's
 router.put('/:id', (req, res) => {
-    const { id } = req.params
-    const changes = req.body
+  const { id } = req.params
+  const changes = req.body
 
-    roomsDB.getRoomById(id)
+  roomsDB
+    .getRoomById(id)
     .then(room => {
-        if(room){
-            roomsDB.updateRoom(changes, id)
-            .then(updatedRoom => {
-                res.status(200).json(updatedRoom)
-            })
-        } else {
-            res.status(404).json({ error: "Could not find room with given ID"})
-        }
+      if (room) {
+        roomsDB.updateRoom(changes, id).then(updatedRoom => {
+          res.status(200).json(updatedRoom)
+        })
+      } else {
+        res.status(404).json({ error: 'Room not found.' })
+      }
     })
     .catch(err => {
-        res.status(500).json({error: "Failed to update room"})
+      res.status(500).json({ error: 'Failed to update room.' })
     })
-
 })
 
 //format exits
