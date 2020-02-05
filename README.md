@@ -2,19 +2,19 @@
 
 deployed URL: https://cs24-bw-ts.herokuapp.com/
 
-# GET ROOMS
-GET: /rooms
+## GET ROOMS
+* GET: /rooms
 
-#GET ROOM BY ID
-GET: /room/:id
+##GET ROOM BY ID
+* GET: /room/:id
 
-#GET ROOM BY COORDINATES
-POST: /room/coord
-JSON body: `{ "coordinates": "(x,y)" }`
+##GET ROOM BY COORDINATES
+* POST: /room/coord
+* JSON body: `{ "coordinates": "(x,y)" }`
 
-#CREATE ROOM
-POST: /rooms
-JSON body: Exactly what is sent from the lambda server
+##CREATE ROOM
+* POST: /rooms
+* JSON body: Exactly what is sent from the lambda server
 `{
   "room_id": 59,
   "title": "room",
@@ -33,9 +33,9 @@ JSON body: Exactly what is sent from the lambda server
   "messages": []
 }`
 
-#UPDATE ROOM
-PUT: /rooms/:id
-JSON body: Whole room in the format of our BE (I know, sorry!)
+##UPDATE ROOM
+* PUT: /rooms/:id
+* JSON body: Whole room in the format of our BE (I know, sorry!)
 `  {
     "id": 1,
     "title": "room that exists",
