@@ -10,7 +10,7 @@ module.exports = {
 }
 
 function createRoom(room) {
-  return db('rooms').insert(room, 'room_id').then(room => room)
+  return db('rooms').insert(room, '*')
 }
 
 function getRooms() {

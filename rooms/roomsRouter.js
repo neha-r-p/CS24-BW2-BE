@@ -73,7 +73,7 @@ router.post('/', formatExits, (req, res) => {
       w: room.w
     })
     .then(room => {
-      res.status(201).json('Room was created')
+      res.status(201).json(room)
     })
     .catch(err =>
       res.status(500).json({ error: 'Server could not add a room' })
