@@ -1,9 +1,10 @@
-const db = require('../db/rooms')
+const db = require('../db/dbConfig')
 
-modules.exports = {
+module.exports = {
   createRoom,
   getRooms,
-  updateRoom
+  updateRoom,
+  createRoomsExits
 }
 
 function createRoom(room) {
@@ -11,7 +12,13 @@ function createRoom(room) {
 }
 
 function getRooms() {
-  return db('rooms').join("exits", "exits.room_id", "rooms.room_id")
+  return db('rooms')
+      .leftJoin("exits", "exits.room_id", "rooms.room_id")
+}
+
+function createRoomsExits(exit) {
+  return db('exits')
+      .insert(exit, "*")
 }
 
 function updateRoom(room, exit) {
